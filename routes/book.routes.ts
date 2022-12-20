@@ -6,18 +6,16 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/book', async (req: Request, res: Response) => {
-    bookModel.find({language: "English"}, (err: Error, books: any) => {
-        setTimeout(function() {
-            if (err) {
-                Logging.warn(err);
-                res.status(500).send();
-            } else {
-                res.status(200).send({
-                    result: books,
-                    count: books.length,
-                });
-            }
-    }, 0);
+    bookModel.find({avg_rating: {$gte: 3, $lte: 5}}, (err: Error, books: any) => {
+        if (err) {
+            Logging.warn(err);
+            res.status(500).send();
+        } else {
+            res.status(200).send({
+                result: books,
+                count: books.length,
+            });
+        }
     });
 });
 
